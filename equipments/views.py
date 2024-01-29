@@ -17,6 +17,7 @@ def index(request):
         # Store data in the database (Assuming you have a model named MyModel)
         # Production.objects.create(data=json.dumps(data))
         print(data)
+        render(request, 'equipments/index.html', {'data': data})
 
         # Respond with a JSON success message
         return JsonResponse({'message': 'Data received and stored successfully'})

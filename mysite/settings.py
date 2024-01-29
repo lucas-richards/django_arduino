@@ -27,7 +27,9 @@ SECRET_KEY = 'django-insecure-8vd^_gafwcn%p3z%&4n9(oo7rer39jbjl-_2&+7q!qyn2ft)c+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'django-arduino-backend.onrender.com',
+]
 
 
 # Application definition
@@ -76,19 +78,19 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# db_from_env = dj_database_url.config(default='postgres://house_o132_user:9QufcJHwj4oEveIOJGy1cEzFheAjVWWP@dpg-cmqs4amg1b2c73d808bg-a.oregon-postgres.render.com/house_o132')
-
-# DATABASES = {
-#     'default': db_from_env
-# }
+db_from_env = dj_database_url.config(default='postgres://house_o132_user:9QufcJHwj4oEveIOJGy1cEzFheAjVWWP@dpg-cmqs4amg1b2c73d808bg-a.oregon-postgres.render.com/house_o132')
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-                
+    'default': db_from_env
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+                
+# }
 
 
 # Password validation

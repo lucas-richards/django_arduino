@@ -7,6 +7,11 @@ def index(request):
     print(request.POST)
     return render(request, "equipments/index.html")
 
+def create(request):
+    print(request.POST)
+    return render(request, "equipments/create.html")
+
+
 
 
 # def tasks_detail(request, proj_id, task_id):

@@ -29,6 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'django-arduino-backend.onrender.com',
+    'localhost',
+    '127.0.0.1',
 ]
 
 

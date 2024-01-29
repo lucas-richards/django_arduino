@@ -9,8 +9,8 @@ from django.views.decorators.http import require_POST
 @csrf_exempt
 @require_POST
 def index(request):
-    print(request)
-    return render(request, "equipments/index.html")
+    print('this is request',request)
+    return JsonResponse({'message': 'Data received and stored successfully'})
 
 @csrf_exempt
 def create_equipment(request):

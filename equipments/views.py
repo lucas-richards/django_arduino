@@ -8,7 +8,6 @@ import json
 # Create your views here.
 
 @csrf_exempt
-@require_POST
 def index(request):
     try:
         # Parse JSON data from the request

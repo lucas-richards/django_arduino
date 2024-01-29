@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import Equipment, Production
+from .models import Equipment, Production
 
 # Create your views here.
 
@@ -10,7 +10,8 @@ def index(request):
     return render(request, "equipments/index.html")
 
 def create_equipment(request):
-    print(request.POST)
+    data = request.POST
+    print(data)
     return 200
 
 

@@ -8,6 +8,7 @@ def index(request):
 
 # create
 def create(request):
+    print(request.POST)
     return render(request, "equipments/create.html")
 
     

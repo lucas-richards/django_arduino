@@ -1,18 +1,23 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from .models import Equipment, Production
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
-
+@csrf_exempt
+@require_POST
 def index(request):
     print(request.POST)
     return render(request, "equipments/index.html")
 
+@csrf_exempt
 def create_equipment(request):
-    data = request.POST
+    data = request.POST.get('data')
+    
     print(data)
-    return 200
+    return JsonResponse({'message': 'Data received and stored successfully'})
 
 
 

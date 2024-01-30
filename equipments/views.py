@@ -15,6 +15,9 @@ def index(request):
         data = json.loads(request.body.decode('utf-8'))
 
         # fetch equipment from database
+        print('data',data)
+        print('this works')
+        print('data.equipment', data.get('equipment'))
         print('data[equipment]',data['equipment'])
         print('data[input_desc]',data['input_desc'])
         # Store data in the database (Assuming you have a model named MyModel)

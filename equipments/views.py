@@ -13,17 +13,15 @@ def index(request):
         # Parse JSON data from the request
         
         data = json.loads(request.body.decode('utf-8'))
-
-        print(data)
-        print(data['equipment'])
+        
 
         # fetch equipment from database
         equipment = Equipment.objects.get(id=data['equipment'])
+        print(equipment)
         # Store data in the database (Assuming you have a model named MyModel)
         is_created = Production.objects.create(
             equipment=equipment,
             input_desc=data['input_desc'],
-            frequency=data['frequency'],
             quantity=data['quantity'],
         )
 

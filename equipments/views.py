@@ -19,13 +19,13 @@ def index(request):
         equipment = Equipment.objects.get(id=data['equipment'])
         print(equipment)
         # Store data in the database (Assuming you have a model named MyModel)
-        is_created = Production.objects.create(
+        Production.objects.create(
             equipment=equipment,
             input_desc=data['input_desc'],
             quantity=data['quantity'],
         )
 
-        print('Activity saved for',is_created)
+        print('Activity saved for',equipment)
         # refresh the page
         equipments = Equipment.objects.all()
         return render(request,'equipments/index.html', {

@@ -24,7 +24,6 @@ def index(request):
             input_desc=data['input_desc'],
             frequency=data['frequency'],
             quantity=data['quantity'],
-            created_at=data['created_at']
         )
 
         # print(data)

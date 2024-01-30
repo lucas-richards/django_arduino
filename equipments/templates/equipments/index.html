@@ -8,4 +8,10 @@
             <li><a href="{% url 'equipments:detail' equipment.id %}">{{ equipment.name }}</a></li>
         {% endfor %}
     </ul>
+    <!-- show data -->
+    <ul>
+        {% for item in data %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

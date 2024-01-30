@@ -15,7 +15,8 @@ def index(request):
         data = json.loads(request.body.decode('utf-8'))
 
         # fetch equipment from database
-        print('data',data)
+        print('data[equipment]',data['equipment'])
+        print('data[input_desc]',data['input_desc'])
         # Store data in the database (Assuming you have a model named MyModel)
         is_created = Production.objects.create(
             equipment=data['equipment'],

@@ -19,7 +19,13 @@ def index(request):
         equipment = Equipment.objects.get(id=data['equipment'])
         print('equipment',equipment)
         # Store data in the database (Assuming you have a model named MyModel)
-        Production.objects.create(equipment=equipment, data=json.dumps(data))
+        Production.objects.create(
+            equipment=equipment,
+            input_desc=data['input_desc'],
+            frequency=data['frequency'],
+            quantity=data['quantity'],
+            created_at=data['created_at']
+        )
 
         # print(data)
         return JsonResponse({'message': 'Data received and stored successfully'})

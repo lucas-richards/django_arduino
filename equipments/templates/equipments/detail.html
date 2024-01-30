@@ -11,7 +11,7 @@
     </div>
     <h2>Production data</h2>
     <!-- table -->
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>equipment</th>
@@ -31,8 +31,10 @@
             {% endfor %}
         </tbody>
     </table>
+    <canvas id="myChart" style="max-width: 500px;"></canvas>
     <div>
-        <a href="{% url 'index' %}">Back to index</a>
+        <a class="btn btn-primary" href="{% url 'index' %}">Back to index</a>
     </div>
+    
 {% endblock %}
 ```

@@ -14,6 +14,9 @@ run command for deployment
 
 ## Static files
 
+`pip install whitenoise`
+`pipenv run pip freeze > requirements.txt`
+
 add middleware
 `'whitenoise.middleware.WhiteNoiseMiddleware' `
 and

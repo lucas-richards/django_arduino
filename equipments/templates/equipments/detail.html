@@ -1,0 +1,40 @@
+
+<!--  detail page -->
+{% extends './base.html' %}
+{% block content %}
+    <h1>Equipment Detail</h1>
+    <div>
+        <h3>{{ equipment.name }}</h3>
+        <p>{{ equipment.description }}</p>
+        <p>{{ equipment.category }}</p>
+        <p>{{ equipment.created_at }}</p>
+    </div>
+    <h2>Production data</h2>
+    <!-- table -->
+    <table>
+        <thead>
+            <tr>
+                <th>equipment</th>
+                <th>description</th>
+                <th>frequency</th>
+                <th>quantity</th>
+                <th>created time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in production %}
+                <tr>
+                    <td>{{ data.equipment }}</td>
+                    <td>{{ data.input_desc }}</td>
+                    <td>{{ data.frequency }}</td>
+                    <td>{{ data.quantity }}</td>
+                    <td>{{ data.created_at }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        <a href="{% url 'index' %}">Back to index</a>
+    </div>
+{% endblock %}
+```

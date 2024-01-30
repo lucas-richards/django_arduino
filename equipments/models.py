@@ -24,11 +24,11 @@ class Production(models.Model):
     frequency = models.CharField(max_length=100)
     # quantity number field
     quantity = models.IntegerField()
-    created_date = models.DateField(default=datetime.now)
+    created_at = models.DateTimeField(default=datetime.now)
     
 
     class Meta:
-        ordering = ['created_date']
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.input_desc

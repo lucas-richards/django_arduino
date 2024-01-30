@@ -16,14 +16,10 @@ def index(request):
 
         # fetch equipment from database
 
-        equipments = Equipment.objects.all()
         # # Store data in the database (Assuming you have a model named MyModel)
-        # # Production.objects.create(data=json.dumps(data))
+        Production.objects.create(data=json.dumps(data))
         # print(data)
-        return render(request, 'equipments/index.html', {
-            equipments: equipments,
-            'data': data, 
-            'message': 'Data received and stored successfully'})
+        return JsonResponse({'message': 'Data received and stored successfully'})
 
     
     except json.JSONDecodeError as e:
@@ -51,11 +47,11 @@ def create_equipment(request):
 
 
 def detail(request, equipment_id):
-    equipment = Equipment.objects.get(id=equipment_id)
-    production = Production.objects.get(equipment=equipment_id)
+    equipment = Equipment.objects.filter(id=equipment_id)
+    production = Production.objects.filter(equipment=equipment_id)
     return render(request, 'equipments/detail.html', {
-        equipment: equipment,
-        production: production
+        'equipment': equipment,
+        'production': production
 
         })
 

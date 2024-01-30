@@ -4,30 +4,34 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import json
+from django.shortcuts import redirect
 
 # Create your views here.
+
 
 @csrf_exempt
 def index(request):
     try:
         # Parse JSON data from the request
+        
         data = json.loads(request.body.decode('utf-8'))
+       
 
-        # Store data in the database (Assuming you have a model named MyModel)
-        # Production.objects.create(data=json.dumps(data))
-        print(data)
-        render('equipments/index.html', {'data': data})
+        # # Store data in the database (Assuming you have a model named MyModel)
+        # # Production.objects.create(data=json.dumps(data))
+        # print(data)
+        return render(request, 'equipments/index.html', {'data': data, 'message': 'Data received and stored successfully'})
 
-        # Respond with a JSON success message
-        return JsonResponse({'message': 'Data received and stored successfully'})
     
     except json.JSONDecodeError as e:
         # Respond with an error message if JSON decoding fails
-        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+        return render(request,'equipments/index.html', {'data': '', 'message': 'Invalid JSON data'})
+        
 
     except Exception as e:
         # Handle other exceptions
-        return JsonResponse({'error': str(e)}, status=500)
+        return render(request,'equipments/index.html', {'data': '', 'message': str(e)} )
+        
 
 @csrf_exempt
 def create_equipment(request):

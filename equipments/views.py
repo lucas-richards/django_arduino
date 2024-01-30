@@ -14,6 +14,9 @@ def index(request):
         
         data = json.loads(request.body.decode('utf-8'))
 
+        print(data)
+        print(data['equipment'])
+
         # fetch equipment from database
         equipment = Equipment.objects.get(id=data['equipment'])
         # Store data in the database (Assuming you have a model named MyModel)
@@ -25,9 +28,14 @@ def index(request):
         )
 
         print('Activity saved for',is_created)
+        # refresh the page
+        equipments = Equipment.objects.all()
+        return render(request,'equipments/index.html', {
+            'equipments': equipments,
+            'data': data, 
+            'message': 'Data received and stored successfully'})
 
-        # print(data)
-        return JsonResponse({'message': 'Data received and stored successfully'})
+        # return JsonResponse({'message': 'Data received and stored successfully'})
 
     
     except json.JSONDecodeError as e:

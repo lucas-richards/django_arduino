@@ -5,13 +5,15 @@
     <h1>Equipments</h1>
     <ul>
         {% for equipment in equipments %}
-            <li><a href="{% url 'equipments:detail' equipment.id %}">{{ equipment.name }}</a></li>
+            <li><a href="{% url 'detail' equipment.id %}">{{ equipment }}</a></li>
         {% endfor %}
     </ul>
     <!-- show data -->
-    <ul>
+    <div>
         
-        <li>message: {{ message }}</li>
+        message: {{ message }}</li>
         
-    </ul>
+    </div>
+    <!-- show data -->
+    {{data}}
 {% endblock %}

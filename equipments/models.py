@@ -21,7 +21,6 @@ class Production(models.Model):
     equipment = models.ForeignKey(
         Equipment, on_delete=models.CASCADE, null=True, blank=True)
     input_desc = models.CharField(max_length=100)
-    frequency = models.CharField(max_length=100)
     # quantity number field
     quantity = models.IntegerField()
     created_at = models.DateTimeField(default=datetime.now)

@@ -15,12 +15,7 @@ def index(request):
         data = json.loads(request.body.decode('utf-8'))
 
         # fetch equipment from database
-        print('data[equipment]',data['equipment'])
-        print('data[input_desc]',data['input_desc'])
-        print('data[frequency]',data['frequency'])
-        print('data[quantity]',data['quantity'])
         equipment = Equipment.objects.get(id=data['equipment'])
-        print('equipment',equipment)
         # Store data in the database (Assuming you have a model named MyModel)
         is_created = Production.objects.create(
             equipment=equipment,
@@ -29,7 +24,7 @@ def index(request):
             quantity=data['quantity'],
         )
 
-        print('is_created',is_created)
+        print('Activity saved for',is_created)
 
         # print(data)
         return JsonResponse({'message': 'Data received and stored successfully'})

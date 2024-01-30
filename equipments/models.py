@@ -13,6 +13,9 @@ class Equipment(models.Model):
     class Meta:
         ordering = ['created_date']
 
+    def __str__(self):
+        return self.title
+
 class Production(models.Model):
 
     equipment = models.ForeignKey(
@@ -26,3 +29,6 @@ class Production(models.Model):
 
     class Meta:
         ordering = ['created_date']
+
+    def __str__(self):
+        return self.input_desc

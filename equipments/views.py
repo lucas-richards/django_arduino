@@ -2,9 +2,7 @@ from django.shortcuts import render
 from .models import Equipment, Production
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
 import json
-from django.shortcuts import redirect
 
 # Create your views here.
 
@@ -15,12 +13,19 @@ def index(request):
         # Parse JSON data from the request
         
         data = json.loads(request.body.decode('utf-8'))
-       
 
+        # fetch equipment from database
+        equipments = Equipment.objects.all()
+        print('equipments',equipments)
+        production = Production.objects.get()
         # # Store data in the database (Assuming you have a model named MyModel)
         # # Production.objects.create(data=json.dumps(data))
         # print(data)
-        return render(request, 'equipments/index.html', {'data': data, 'message': 'Data received and stored successfully'})
+        return render(request, 'equipments/index.html', {
+            production: production,
+            equipments: equipments,
+            'data': data, 
+            'message': 'Data received and stored successfully'})
 
     
     except json.JSONDecodeError as e:
@@ -41,8 +46,14 @@ def create_equipment(request):
     return JsonResponse({'message': 'Data received and stored successfully'})
 
 
+def equipments_detail(request, equipment_id):
+    equipment = Equipment.objects.get(id=equipment_id)
+    production = Production.objects.get(equipment=equipment_id)
+    return render(request, 'equipments/detail.html', {
+        equipment: equipment,
+        production: production
 
-
+        })
 
 # def tasks_detail(request, proj_id, task_id):
 #     task = Task.objects.get(id=task_id)

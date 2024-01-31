@@ -23,11 +23,12 @@ class Production(models.Model):
     input_desc = models.CharField(max_length=100)
     # quantity number field
     quantity = models.IntegerField()
+    # remove tiem zone
     created_at = models.DateTimeField(default=datetime.now)
     
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['created_at']
 
     def __str__(self):
         return self.input_desc

@@ -3,6 +3,10 @@ from .models import Equipment, Production
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+import html
+from django.views.decorators.http import require_POST
+from datetime import datetime, timezone
+from datetime import datetime, timedelta
 
 # Create your views here.
 
@@ -61,11 +65,36 @@ def create_equipment(request):
 
 
 def detail(request, equipment_id):
-    equipment = Equipment.objects.filter(id=equipment_id)
-    production = Production.objects.filter(equipment=equipment_id)
+    # get equipment by id
+    equipment = Equipment.objects.get(id=equipment_id)
+    if request.method == 'POST':
+        # validate date
+        if request.POST.get('start_date') == '' or request.POST.get('end_date') == '':
+            return render(request, 'equipments/detail.html', {
+                'equipment': equipment,
+                'error': 'Please select a start and end date'
+            })
+        start_date = datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d').replace(tzinfo=timezone.utc)
+        end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d').replace(tzinfo=timezone.utc)
+        print(start_date)
+        print(end_date)
+    else:
+        start_date = datetime.now(timezone.utc) - timedelta(days=2)
+        end_date = datetime.now().replace(tzinfo=timezone.utc)
+    production = Production.objects.filter(equipment=equipment_id, created_at__range=[start_date, end_date])
+    
+    # create two variables: one for created_at and one for quantity
+    created_at = []
+    quantity = []
+    # loop through production and append created_at and quantity to the variables
+    for prod in production:
+        created_at.append(prod.created_at.strftime('%m-%d %H:%M'))
+        quantity.append(prod.quantity)
     return render(request, 'equipments/detail.html', {
         'equipment': equipment,
-        'production': production
+        'production': production,
+        'created_at': created_at,
+        'quantity': quantity,
 
         })
 

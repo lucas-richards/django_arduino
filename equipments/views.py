@@ -9,10 +9,21 @@ from datetime import datetime, timezone
 from datetime import datetime, timedelta
 
 # Create your views here.
+ 
 
+
+def index(request):
+    
+    equipments = Equipment.objects.all()
+    return render(request,'equipments/index.html', {
+        'equipments': equipments,
+        'data': data, 
+        'message': 'Data received and stored successfully'})
+
+     
 
 @csrf_exempt
-def index(request):
+def data(request):
     try:
         # Parse JSON data from the request
         
@@ -32,10 +43,7 @@ def index(request):
         print('Activity saved for',equipment)
         # refresh the page
         equipments = Equipment.objects.all()
-        return render(request,'equipments/index.html', {
-            'equipments': equipments,
-            'data': data, 
-            'message': 'Data received and stored successfully'})
+        return JsonResponse({'message': 'Data received and stored successfully'})
 
         # return JsonResponse({'message': 'Data received and stored successfully'})
 
@@ -43,25 +51,13 @@ def index(request):
     except json.JSONDecodeError as e:
         # Respond with an error message if JSON decoding fails
 
-        equipments = Equipment.objects.all()
-        return render(request,'equipments/index.html', {
-            'equipments': equipments,
-            'data': '', 
-            'message': 'Invalid JSON data'})
+        return JsonResponse({'data': '', 'message': str(e)} )
         
 
     except Exception as e:
         # Handle other exceptions
-        equipments = Equipment.objects.all()
-        return render(request,'equipments/index.html', {'data': '', 'message': str(e)} )
-        
-
-@csrf_exempt
-def create_equipment(request):
-    data = request.POST
+        return JsonResponse({'data': '', 'message': str(e)} )
     
-    print(data)
-    return JsonResponse({'message': 'Data received and stored successfully'})
 
 
 def detail(request, equipment_id):

@@ -3,15 +3,21 @@
 {% extends './base.html' %}
 {% block content %}
     <h1>Equipments</h1>
-    <ul>
+    <ul class="list-group">
         {% for equipment in equipments %}
-            <li><a href="{% url 'detail' equipment.id %}">{{ equipment }}</a></li>
+            <a class="link-underline link-underline-opacity-0" href="{% url 'detail' equipment.id %}">
+                <li class="list-group-hover list-group-item d-flex justify-content-between align-items-center" >
+                    {{ equipment }}
+                    <span class="badge bg-primary rounded-pill">14</span>
+                </li>
+            </a>
         {% endfor %}
     </ul>
     <!-- show data -->
-    <div>
+    
+    <div class="m-2">
         
-        message: {{ message }}</li>
+        <small>message: {{ message }}</small>
         
     </div>
     <!-- show data -->

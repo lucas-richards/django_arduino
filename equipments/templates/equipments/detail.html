@@ -12,6 +12,27 @@
         <h3>{{ equipment.title }}: </h3>
         <p> {{ equipment.description }}</p>
     </div>
+    <div class="container mt-4">
+        <div class="row">
+          <div class="col m-1 p-1 bg-light rounded d-flex flex-column justify-content-center align-items-center">
+            <div class="text-success">14:45h</div>
+            <div>Uptime</div>
+          </div>
+          <div class="col m-1 p-1 bg-light rounded d-flex flex-column justify-content-center align-items-center">
+            <div class="text-danger">4:45h</div>
+            <div>Downtime</div>
+          </div>
+          <div class="col m-1 p-1 bg-light rounded d-flex flex-column justify-content-center align-items-center">
+            <div class="text-success">3</div>
+            <div>Machines up</div>
+          </div>
+          <div class="col m-1 p-1 bg-light rounded d-flex flex-column justify-content-center align-items-center">
+            <div class="text-danger">1</div>
+            <div>Machines down</div>
+          </div>
+        </div>
+      </div>
+    
     <h2>Production data</h2>
     <p>{{ error }}</p>
     <form id="dateFilterForm" method="post" action="{% url 'detail' equipment.id %}" >

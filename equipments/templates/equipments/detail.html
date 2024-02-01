@@ -2,17 +2,19 @@
 <!--  detail page -->
 {% extends './base.html' %}
 {% block content %}
-    <div>
-        <a class="btn btn-sm btn-primary mb-5" href="{% url 'index' %}">Back to index</a>
-    </div>
-    <h1>Equipment Detail</h1>
-    <div class="m-3 ">
+<div>
+    <a  href="{% url 'index' %}">
+        <i class="fa-solid fa-hand-point-left"></i>
+    </a>
+</div>
+<h1 class="text-center mb-5">Equipment Detail</h1>
+    <div class="bg-light p-2 mb-2 rounded">
         <h3>{{ equipment.title }}: </h3>
         <p> {{ equipment.description }}</p>
     </div>
     <h2>Production data</h2>
     <p>{{ error }}</p>
-    <form id="dateFilterForm" method="post" action="{% url 'detail' equipment.id %}">
+    <form id="dateFilterForm" method="post" action="{% url 'detail' equipment.id %}" >
         {% csrf_token %}
         <div class="mb-3">
             <div class="input-group">
@@ -24,9 +26,9 @@
             </div>
         </div>
     </form>
-    <canvas id="myChart" style="max-width: 800px;"></canvas>
+    <canvas id="myChart" ></canvas>
     <!-- table -->
-    <table class="table">
+    <table class="table mt-5">
         <thead>
             <tr>
                 <th>input description</th>
@@ -61,7 +63,7 @@
             data: {
                 labels: originalData.labels,
                 datasets: [{
-                    label: 'PPM',
+                    label: 'Pieces Per Minute',
                     data: originalData.data,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -81,10 +83,7 @@
           }
         },
         x: {
-            title: {
-                display: true,
-                text: 'Date'
-            }
+            
 
         }
         

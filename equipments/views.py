@@ -75,7 +75,7 @@ def detail(request, equipment_id):
                 'error': 'Please select a start and end date'
             })
         start_date = datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d')
-        end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d') + timedelta(days=1)
+        end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d') 
         print(start_date)
         print(end_date)
     else:

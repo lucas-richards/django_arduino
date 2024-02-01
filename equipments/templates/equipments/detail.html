@@ -2,17 +2,21 @@
 <!--  detail page -->
 {% extends './base.html' %}
 {% block content %}
-<div>
-    <a  href="{% url 'index' %}">
-        <i class="fa-solid fa-hand-point-left"></i>
+<div class="d-flex flex-row justify-content-between align-items-center">
+    <a class="text-black"  href="{% url 'index' %}">
+        <i class="fa-solid fa-circle-arrow-left"></i>
     </a>
+    <div >
+        <i class="fa-solid fa-circle fa-2xs" style="color:  green"></i>
+       Running
+    </div>
 </div>
 <h1 class="text-center mb-5">Equipment Detail</h1>
     <div class="bg-light p-2 mb-2 rounded">
         <h3>{{ equipment.title }}: </h3>
         <p> {{ equipment.description }}</p>
     </div>
-    <div class="container mt-4">
+    <div class="container mt-4 mb-4">
         <div class="row">
           <div class="col m-1 p-1 bg-light rounded d-flex flex-column justify-content-center align-items-center">
             <div class="text-success">14:45h</div>
@@ -27,7 +31,7 @@
             <div>Machines up</div>
           </div>
           <div class="col m-1 p-1 bg-light rounded d-flex flex-column justify-content-center align-items-center">
-            <div class="text-danger">1</div>
+            <div class="text-danger">0</div>
             <div>Machines down</div>
           </div>
         </div>
@@ -47,6 +51,7 @@
             </div>
         </div>
     </form>
+    <canvas id="myChart2" ></canvas>
     <canvas id="myChart" ></canvas>
     <!-- table -->
     <table class="table mt-5">
@@ -80,7 +85,7 @@
 
         // var ctx = document.getElementById("myChart").getContext('2d');
         var myChart = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: originalData.labels,
                 datasets: [{
@@ -92,24 +97,56 @@
                 }]
             },
             options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 1,
-            callback: function(value, index, values) {
-              return value + ' ppm';
-            },
-            
-          }
-        },
-        x: {
-            
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            callback: function(value, index, values) {
+                            return value + ' ppm';
+                            },
+                            
+                        }
+                    },
+                    x: {
+                        
 
-        }
-        
-      }
-    }
+                    }
+                    
+                }
+            }
+        });
+
+
+        const ctx2 = document.getElementById('myChart2');
+        var threshold = 10; // Set your threshold value
+
+        var myChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: originalData.labels,
+                datasets: [{
+                    label: 'Pieces Per Minute',
+                    data: originalData.data,
+                    backgroundColor: originalData.data.map(value => value > threshold ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 99, 132, 0.2)'),
+                    borderColor: originalData.data.map(value => value > threshold ? 'rgba(0, 255, 0, 1)' : 'rgba(255, 99, 132, 1)'),
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            callback: function(value, index, values) {
+                                return value + ' ppm';
+                            }
+                        }
+                    },
+                    x: {}
+                }
+            }
         });
 
     </script>

@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta, date
+from django.utils import timezone
 
 # Create your models here.
 class Equipment(models.Model):
@@ -24,7 +25,7 @@ class Production(models.Model):
     # quantity number field
     quantity = models.IntegerField()
     # remove tiem zone
-    created_at = models.DateTimeField(default=datetime.now)
+    created_at = models.DateTimeField(default=timezone.now)
     
 
     class Meta:

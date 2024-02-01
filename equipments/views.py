@@ -74,13 +74,13 @@ def detail(request, equipment_id):
                 'equipment': equipment,
                 'error': 'Please select a start and end date'
             })
-        start_date = datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d').replace(tzinfo=timezone.utc)
-        end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d').replace(tzinfo=timezone.utc) + timedelta(days=1)
+        start_date = datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d')
+        end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d') + timedelta(days=1)
         print(start_date)
         print(end_date)
     else:
-        start_date = datetime.now(timezone.utc) - timedelta(days=2)
-        end_date = datetime.now().replace(tzinfo=timezone.utc)
+        start_date = datetime.now() - timedelta(days=2)
+        end_date = datetime.now() 
     production = Production.objects.filter(equipment=equipment_id, created_at__range=[start_date, end_date])
     
     # create two variables: one for created_at and one for quantity
@@ -95,6 +95,8 @@ def detail(request, equipment_id):
         'production': production,
         'created_at': created_at,
         'quantity': quantity,
+        'start_date': start_date.strftime('%Y-%m-%d'),
+        'end_date': end_date.strftime('%Y-%m-%d')
 
         })
 

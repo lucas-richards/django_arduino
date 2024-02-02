@@ -84,6 +84,7 @@ def detail(request, equipment_id):
     else:
         start_date = datetime.now() - timedelta(days=2)
         end_date = datetime.now() 
+        end_date_query = end_date + timedelta(days=1)
     production = Production.objects.filter(equipment=equipment_id, created_at__range=[start_date, end_date_query])
     
     # create two variables: one for created_at and one for quantity

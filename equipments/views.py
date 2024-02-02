@@ -5,8 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import html
 from django.views.decorators.http import require_POST
-from datetime import datetime, timezone
 from datetime import datetime, timedelta
+from django.utils import timezone
 
 # Create your views here.
  
@@ -15,7 +15,9 @@ from datetime import datetime, timedelta
 def index(request):
     
     equipments = Equipment.objects.all()
+    production = Production.objects.all()
     return render(request,'equipments/index.html', {
+        'production': production,
         'equipments': equipments,
         'data': data, 
         'message': 'Data received and stored successfully'})
@@ -70,22 +72,29 @@ def detail(request, equipment_id):
                 'equipment': equipment,
                 'error': 'Please select a start and end date'
             })
-        start_date = datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d')
-        end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d') 
+        # start_date = datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d')
+        start_date_str = request.POST.get('start_date')
+        start_date = timezone.make_aware(datetime.strptime(start_date_str, '%Y-%m-%d'), timezone=timezone.get_fixed_timezone(-480))
+        # end_date = datetime.strptime(request.POST.get('end_date'), '%Y-%m-%d') 
+        end_date_str = request.POST.get('end_date')
+        end_date = timezone.make_aware(datetime.strptime(end_date_str, '%Y-%m-%d'), timezone=timezone.get_fixed_timezone(-480))
+        end_date_query = end_date + timedelta(days=1)
         print(start_date)
         print(end_date)
     else:
         start_date = datetime.now() - timedelta(days=2)
         end_date = datetime.now() 
-    production = Production.objects.filter(equipment=equipment_id, created_at__range=[start_date, end_date])
+    production = Production.objects.filter(equipment=equipment_id, created_at__range=[start_date, end_date_query])
     
     # create two variables: one for created_at and one for quantity
     created_at = []
     quantity = []
     # loop through production and append created_at and quantity to the variables
     for prod in production:
-        created_at.append(prod.created_at.strftime('%m-%d %H:%M'))
+        pacific_time = prod.created_at.astimezone(timezone.get_fixed_timezone(-480))
+        created_at.append(pacific_time.strftime('%m-%d %H:%M'))
         quantity.append(prod.quantity)
+    
     return render(request, 'equipments/detail.html', {
         'equipment': equipment,
         'production': production,

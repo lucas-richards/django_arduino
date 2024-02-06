@@ -1,14 +1,22 @@
 from django.shortcuts import render
 from .models import Equipment, Production
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-import html
 from django.views.decorators.http import require_POST
 from datetime import datetime, timedelta
 from django.utils import timezone
-
-# Create your views here.
+# views.py
+import matplotlib
+matplotlib.use('Agg') # Required to redirect the plot to a file
+import matplotlib.pyplot as plt
+from matplotlib.dates import DateFormatter
+from matplotlib.ticker import MaxNLocator
+from datetime import datetime, timedelta
+import matplotlib.dates as mdates
+import numpy as np
+import os
+from django.conf import settings
  
 
 
@@ -60,6 +68,55 @@ def data(request):
         # Handle other exceptions
         return JsonResponse({'data': '', 'message': str(e)} )
     
+
+
+def generate_graph(request):
+    # Get the current date in your timezone
+    current_date = timezone.now().date()
+
+    # Get the data from the database for the current date
+    data = Production.objects.filter(created_at__date=current_date)
+
+    # Extract timestamps and corresponding values
+    timestamps = []
+    values = []
+
+    # Loop through production and append created_at and quantity to the variables
+    for prod in data:
+        pacific_time = prod.created_at.astimezone(timezone.get_fixed_timezone(-480))
+        timestamps.append(pacific_time)
+        values.append(prod.quantity)
+
+    # Convert time values to numerical format
+    start_time = mdates.date2num(datetime.combine(current_date, datetime.min.time()))
+    end_time = mdates.date2num(datetime.combine(current_date, datetime.max.time()))
+
+    # Create a figure and axis
+    fig, ax = plt.subplots()
+
+    # Set the x-axis format
+    ax.xaxis.set_major_locator(MaxNLocator(nbins=20))  # adjust the number of x-axis ticks as needed
+    ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))
+
+    # Plot the production data
+    ax.plot(timestamps, values, label='Production Data', color='green')
+
+    # Create a horizontal line for the entire day
+    ax.axhline(0, color='red', linestyle='--', xmin=start_time, xmax=end_time)
+
+    # Customize the plot as needed
+    ax.set_xlabel('Time')
+    ax.set_ylabel('Production Quantity')
+    ax.legend()
+
+    # Save the plot to a temporary file or directly display it
+    temp_file_path = './static/graph.png'
+    plt.savefig(temp_file_path)
+    print('Graph saved to', temp_file_path)
+    plt.close()
+
+    # Return the path to the saved image
+    return render(request, 'graph.html', {'image_path': temp_file_path})
 
 
 def detail(request, equipment_id):

@@ -7,16 +7,6 @@ from django.views.decorators.http import require_POST
 from datetime import datetime, timedelta
 from django.utils import timezone
 # views.py
-import matplotlib
-matplotlib.use('Agg') # Required to redirect the plot to a file
-import matplotlib.pyplot as plt
-from matplotlib.dates import DateFormatter
-from matplotlib.ticker import MaxNLocator
-from datetime import datetime, timedelta
-import matplotlib.dates as mdates
-import numpy as np
-import os
-from django.conf import settings
  
 
 

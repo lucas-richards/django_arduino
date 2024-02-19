@@ -72,12 +72,12 @@ def qrcode(request):
     geolocation_endpoint = f'https://ipapi.co/{client_ip}/json/'
     response = requests.get(geolocation_endpoint)
 
-    # if response.status_code == 200:
-    location_data = response.json()
-    latitude = location_data.get('latitude')
-    longitude = location_data.get('longitude')
+    if response.status_code == 200:
+        location_data = response.json()
+        latitude = location_data.get('latitude')
+        longitude = location_data.get('longitude')
 
-    print(f'Latitude: {latitude}, Longitude: {longitude}')
+        print(f'Latitude: {latitude}, Longitude: {longitude}')
 
         # Save latitude and longitude to the database or perform any necessary action
         # ...

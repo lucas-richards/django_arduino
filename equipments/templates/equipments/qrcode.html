@@ -11,6 +11,28 @@
             ID Website
         </button>
     </div>
+    <!-- table showin qrcodes -->
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>QR Code</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for qr in qrcodes %}
+                <tr>
+                    <td>{{ qr.id }}</td>
+                    <td>{{ qr.qrcode }}</td>
+                    <td>{{ qr.longitude }}</td>
+                    <td>{{ qr.latitude }}</td>
+                    <td>{{ qr.created_date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
 
 
 

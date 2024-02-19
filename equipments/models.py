@@ -33,3 +33,15 @@ class Production(models.Model):
 
     def __str__(self):
         return self.input_desc
+    
+class Qrcode(models.Model):
+    qrcode = models.CharField(max_length=100)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    created_date = models.DateField(default=datetime.now)
+
+    class Meta:
+        ordering = ['created_date']
+
+    def __str__(self):
+        return self.qrcode

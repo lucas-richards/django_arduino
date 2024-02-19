@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Equipment, Production
+from .models import Equipment, Production, Qrcode
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -62,8 +62,18 @@ def data(request):
         # Handle other exceptions
         return JsonResponse({'data': '', 'message': str(e)} )
 
-def qrcode(request):
-    return render(request, 'equipments/qrcode.html')
+def qrcodeid(request):
+    qrcodes = Qrcode.objects.all()
+
+    return render(request, 'equipments/qrcode.html', {
+        'qrcodes': qrcodes
+    })
+
+def qrcode_detail(request):
+    qrcodes = Qrcode.objects.all()
+    return render(request, 'equipments/qrcode_detail.html', {
+        'qrcodes': qrcodes
+    })
 
 def get_client_location(request):
     if request.method == 'POST':
@@ -72,6 +82,11 @@ def get_client_location(request):
 
         print('Latitude:', latitude)
         print('Longitude:', longitude)
+        Qrcode.objects.create(
+            qrcode='id',
+            latitude=latitude,
+            longitude=longitude,
+        )
 
         # Process the latitude and longitude as needed
         # For example, you can store them in the database, use them in your application, etc.

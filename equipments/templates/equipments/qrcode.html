@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Location and Redirect</title>
+</head>
+<body>
+
+<button onclick="getLocation()">Get Location and Redirect</button>
+
+<script>
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(sendLocationAndRedirect, handleLocationError);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function sendLocationAndRedirect(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    // Send the location to the Django server using a POST request
+    fetch('/get_client_location/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken')  // Include CSRF token if you are using Django's CSRF protection
+        },
+        body: `latitude=${latitude}&longitude=${longitude}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Location sent successfully!');
+            // Redirect to www.idlube.com
+            window.location.href = 'http://www.idlube.com';
+        } else {
+            alert('Failed to send location.');
+        }
+    })
+    .catch(error => {
+        console.error('Error sending location:', error);
+    });
+}
+
+function handleLocationError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            alert("User denied the request for Geolocation.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable.");
+            break;
+        case error.TIMEOUT:
+            alert("The request to get user location timed out.");
+            break;
+        case error.UNKNOWN_ERROR:
+            alert("An unknown error occurred.");
+            break;
+    }
+}
+
+// Helper function to get CSRF token from cookies
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+</script>
+
+</body>
+</html>

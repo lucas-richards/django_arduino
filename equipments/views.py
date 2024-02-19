@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.shortcuts import redirect
 from ipware import get_client_ip
 import requests
+from django.http import HttpResponseRedirect
 # views.py
  
 
@@ -60,40 +61,24 @@ def data(request):
     except Exception as e:
         # Handle other exceptions
         return JsonResponse({'data': '', 'message': str(e)} )
-    
-@csrf_exempt
+
 def qrcode(request):
-    client_ip, is_routable = get_client_ip(request)
+    return render(request, 'equipments/qrcode.html')
 
-    if client_ip is None:
-        print('The user is not connected through the internet')
+def get_client_location(request):
+    if request.method == 'POST':
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
 
-    # Ask the user for permission to use their location
-    user_permission = input('Can we use your location? (yes/no): ')
+        print('Latitude:', latitude)
+        print('Longitude:', longitude)
 
-    if user_permission.lower() == 'yes':
-        # Use a geolocation service (replace with your preferred service)
-        geolocation_endpoint = f'https://ipapi.co/{client_ip}/json/'
-        response = requests.get(geolocation_endpoint)
+        # Process the latitude and longitude as needed
+        # For example, you can store them in the database, use them in your application, etc.
 
-        if response.status_code == 200:
-            location_data = response.json()
-            latitude = location_data.get('latitude')
-            longitude = location_data.get('longitude')
-
-            print(f'Latitude: {latitude}, Longitude: {longitude}')
-
-            # Save latitude and longitude to the database or perform any necessary action
-            # ...
-
-            # Redirect the user to the external website
-            return redirect('http://www.idlube.com')
+        return JsonResponse({'status': 'success'})
     else:
-        print('User denied permission to use location.')
-
-    # If the user denied permission or if there was an issue with geolocation, redirect without using the location
-    return redirect('http://www.idlube.com')
-    
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
     
 

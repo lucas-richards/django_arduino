@@ -72,7 +72,9 @@ def qrcode(request):
     # print('Activity saved for',equipment)
     # # refresh the page
     # equipments = Equipment.objects.all()
-    return render(request,'https://www.idlube.com/')
+    # return to this website https://www.idlube.com/
+    return HttpResponse("https://www.idlube.com/")
+    
 
     
 

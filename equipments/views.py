@@ -68,21 +68,30 @@ def qrcode(request):
     if client_ip is None:
         print('The user is not connected through the internet')
 
-    # Use a geolocation service (replace with your preferred service)
-    geolocation_endpoint = f'https://ipapi.co/{client_ip}/json/'
-    response = requests.get(geolocation_endpoint)
+    # Ask the user for permission to use their location
+    user_permission = input('Can we use your location? (yes/no): ')
 
-    if response.status_code == 200:
-        location_data = response.json()
-        latitude = location_data.get('latitude')
-        longitude = location_data.get('longitude')
+    if user_permission.lower() == 'yes':
+        # Use a geolocation service (replace with your preferred service)
+        geolocation_endpoint = f'https://ipapi.co/{client_ip}/json/'
+        response = requests.get(geolocation_endpoint)
 
-        print(f'Latitude: {latitude}, Longitude: {longitude}')
+        if response.status_code == 200:
+            location_data = response.json()
+            latitude = location_data.get('latitude')
+            longitude = location_data.get('longitude')
 
-        # Save latitude and longitude to the database or perform any necessary action
-        # ...
+            print(f'Latitude: {latitude}, Longitude: {longitude}')
 
-        # Redirect the user to the external website
+            # Save latitude and longitude to the database or perform any necessary action
+            # ...
+
+            # Redirect the user to the external website
+            return redirect('http://www.idlube.com')
+    else:
+        print('User denied permission to use location.')
+
+    # If the user denied permission or if there was an issue with geolocation, redirect without using the location
     return redirect('http://www.idlube.com')
     
 

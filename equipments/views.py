@@ -58,6 +58,23 @@ def data(request):
         # Handle other exceptions
         return JsonResponse({'data': '', 'message': str(e)} )
     
+@csrf_exempt
+def qrcode(request):
+    
+    print('qrcode scanned')
+    # Store data in the database (Assuming you have a model named MyModel)
+    # Production.objects.create(
+    #     equipment=equipment,
+    #     input_desc=data['input_desc'],
+    #     quantity=data['quantity'],
+    # )
+
+    # print('Activity saved for',equipment)
+    # # refresh the page
+    # equipments = Equipment.objects.all()
+    return render(request,'https://www.idlube.com/')
+
+    
 
 
 def detail(request, equipment_id):

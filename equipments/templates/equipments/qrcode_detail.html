@@ -3,7 +3,12 @@
 {% load static %}
 {% block title %}QR Code Detail{% endblock %}
 {% block content %}
+
+
+    <h2>Map</h2>
+    <div id="map" style="height: 500px;"></div>
     <!-- table showin qrcodes -->
+    <h2>Data</h2>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -26,22 +31,28 @@
             {% endfor %}
         </tbody>
     </table>
-    <h2>Map</h2>
-    <div id="map" style="height: 500px;"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
     <script>
-        var map = L.map('map').setView([37.0902, -95.7129], 4)
+        var map = L.map('map').setView([37.0902, -95.7129], 4); // Set the map center to the United States
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        {% for qr in qrcodes %}
-            L.marker([{{ qr.latitude }}, {{ qr.longitude }}])
-                .bindPopup('{{ qr.qr_code }} - {{ qr.created_date }}')
-                .addTo(map);
-        {% endfor %}
-    </script>
+        var markers = L.markerClusterGroup(); // Create a marker cluster group
 
+        {% for qr in qrcodes %}
+            var marker = L.marker([{{ qr.latitude }}, {{ qr.longitude }}])
+                .bindPopup('{{ qr.qr_code }} - {{ qr.created_date }}');
+
+            markers.addLayer(marker); // Add the marker to the cluster group
+        {% endfor %}
+
+        map.addLayer(markers); // Add the marker cluster group to the map
+    </script>
+    
     {% endblock %}
 
     

@@ -4,8 +4,9 @@
     <title>Go to ID Website</title>
 </head>
 <body>
-    <div style="display: flex;justify-content: center; align-items: center;">
+    <div style="display: flex; justify-content: center; align-items: center;">
         <button 
+            id="idWebsiteButton"
             style="
                 margin: 150px;
                 font-size: 84px; 
@@ -19,10 +20,18 @@
             onclick="getLocation()">
             ID Website
         </button>
+        <div id="spinner" style="display: none; margin-left: 20px;">
+            <!-- Add your spinner HTML or use a library like Font Awesome or Spin.js -->
+            Loading...
+        </div>
     </div>
+    
+    
 
 <script>
 function getLocation() {
+    document.getElementById('idWebsiteButton').style.display = 'none'; // Disable the button to prevent multiple clicks
+    document.getElementById('spinner').style.display = 'block';
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(sendLocationAndRedirect, handleLocationError);
     } else {

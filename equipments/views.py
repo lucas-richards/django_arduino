@@ -65,11 +65,7 @@ def data(request):
         return JsonResponse({'data': '', 'message': str(e)} )
 
 def qrcodeid(request):
-    qrcodes = Qrcode.objects.all()
-
-    return render(request, 'equipments/qrcode.html', {
-        'qrcodes': qrcodes
-    })
+    return render(request, 'equipments/qrcode.html')
 
 def qrcode_detail(request):
     qrcodes = Qrcode.objects.all()
@@ -77,6 +73,7 @@ def qrcode_detail(request):
         'qrcodes': qrcodes
     })
 
+@csrf_exempt
 def get_client_location(request):
     if request.method == 'POST':
         latitude = request.POST.get('latitude')
@@ -96,11 +93,6 @@ def get_client_location(request):
         return JsonResponse({'status': 'success'})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
-    
-
-    
-
 
 def detail(request, equipment_id):
     # get equipment by id

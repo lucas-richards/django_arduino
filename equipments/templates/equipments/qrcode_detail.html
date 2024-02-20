@@ -27,7 +27,20 @@
         </tbody>
     </table>
     <h2>Map</h2>
-    {% leaflet_map "yourmap" %}
+    <div id="map" style="height: 500px;"></div>
+    <script>
+        var map = L.map('map').setView([37.0902, -95.7129], 4)
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        {% for qr in qrcodes %}
+            L.marker([{{ qr.latitude }}, {{ qr.longitude }}])
+                .bindPopup('{{ qr.qr_code }} - {{ qr.created_date }}')
+                .addTo(map);
+        {% endfor %}
+    </script>
 
     {% endblock %}
 

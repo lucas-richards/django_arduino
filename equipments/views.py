@@ -18,9 +18,11 @@ def index(request):
     
     equipments = Equipment.objects.all()
     production = Production.objects.all()
+    qrcode_count = Qrcode.objects.all().count()
     return render(request,'equipments/index.html', {
         'production': production,
         'equipments': equipments,
+        'qrcode_count': qrcode_count,
         'data': data, 
         'message': 'Data received and stored successfully'})
 

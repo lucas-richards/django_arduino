@@ -1,16 +1,15 @@
 from django.shortcuts import render
-from .models import Equipment, Production, Qrcode
-from django.http import JsonResponse, HttpResponse
+from .models import Equipment, Production, Location
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from django.views.decorators.http import require_POST
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.shortcuts import redirect
-from ipware import get_client_ip
-import requests
-from django.http import HttpResponseRedirect
-# views.py
+import urllib.request
+import json
+
+
  
 
 
@@ -18,7 +17,7 @@ def index(request):
     
     equipments = Equipment.objects.all()
     production = Production.objects.all()
-    qrcode_count = Qrcode.objects.all().count()
+    qrcode_count = Location.objects.all().count()
     return render(request,'equipments/index.html', {
         'production': production,
         'equipments': equipments,
@@ -64,35 +63,28 @@ def data(request):
         # Handle other exceptions
         return JsonResponse({'data': '', 'message': str(e)} )
 
-def qrcodeid(request):
-    return render(request, 'equipments/qrcode.html')
+def qrcode_id(request):
+    with urllib.request.urlopen("https://geolocation-db.com/json") as url:
+        data = json.loads(url.read().decode())
+        data['qrcode'] = 'id'
+        print(data)
+    Location(**data).save()
+    return redirect('http://www.idlube.com')
+
+def qrcode_tag(request):
+    with urllib.request.urlopen("https://geolocation-db.com/json") as url:
+        data = json.loads(url.read().decode())
+        data['qrcode'] = 'tag'
+        print(data)
+    Location(**data).save()
+    return redirect('http://www.totalaccessgroup.com')
 
 def qrcode_detail(request):
-    qrcodes = Qrcode.objects.all()
+    locations = Location.objects.all()
     return render(request, 'equipments/qrcode_detail.html', {
-        'qrcodes': qrcodes
+        'locations': locations
     })
 
-@csrf_exempt
-def get_client_location(request):
-    if request.method == 'POST':
-        latitude = request.POST.get('latitude')
-        longitude = request.POST.get('longitude')
-
-        print('Latitude:', latitude)
-        print('Longitude:', longitude)
-        Qrcode.objects.create(
-            qrcode='id',
-            latitude=latitude,
-            longitude=longitude,
-        )
-
-        # Process the latitude and longitude as needed
-        # For example, you can store them in the database, use them in your application, etc.
-
-        return JsonResponse({'status': 'success'})
-    else:
-        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 def detail(request, equipment_id):
     # get equipment by id

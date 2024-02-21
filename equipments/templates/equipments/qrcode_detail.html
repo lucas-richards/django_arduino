@@ -8,29 +8,38 @@
     <h2>Map</h2>
     <div id="map" style="height: 500px;"></div>
     <!-- table showin qrcodes -->
-    <h2>Data</h2>
+    <h2>Data locations</h2>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>QR Code</th>
+                <th>qrcode</th>
+                <th>country_name</th>
+                <th>state</th>
+                <th>city</th>
+                <th>postal</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
-                <th>Date</th>
+                <th>created_date</th>
             </tr>
         </thead>
         <tbody>
-            {% for qr in qrcodes %}
+            {% for location in locations %}
                 <tr>
-                    <td>{{ qr.id }}</td>
-                    <td>{{ qr.qrcode }}</td>
-                    <td>{{ qr.longitude }}</td>
-                    <td>{{ qr.latitude }}</td>
-                    <td>{{ qr.created_date }}</td>
+                    <td>{{ location.id }}</td>
+                    <td>{{ location.qrcode }}</td>
+                    <td>{{ location.country_name }}</td>
+                    <td>{{ location.state }}</td>
+                    <td>{{ location.city }}</td>
+                    <td>{{ location.postal }}</td>
+                    <td>{{ location.latitude }}</td>
+                    <td>{{ location.longitude }}</td>
+                    <td>{{ location.created_date }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
@@ -43,9 +52,9 @@
 
         var markers = L.markerClusterGroup(); // Create a marker cluster group
 
-        {% for qr in qrcodes %}
-            var marker = L.marker([{{ qr.latitude }}, {{ qr.longitude }}])
-                .bindPopup('{{ qr.qr_code }} - {{ qr.created_date }}');
+        {% for loc in locations %}
+            var marker = L.marker([{{ loc.latitude }}, {{ loc.longitude }}])
+                .bindPopup('{{ loc.qrcode }} - {{ loc.created_date }}');
 
             markers.addLayer(marker); // Add the marker to the cluster group
         {% endfor %}

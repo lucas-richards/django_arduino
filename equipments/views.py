@@ -91,7 +91,7 @@ def qrcode_id(request):
         latitude=data2['loc'].split(',')[0],
         longitude=data2['loc'].split(',')[1],
     )
-    return redirect('http://www.idlube.com')
+    return redirect('https://www.idlube.com')
 
 def qrcode_tag(request):
     with urllib.request.urlopen("https://geolocation-db.com/json") as url:
@@ -134,9 +134,9 @@ def get_client_location(request):
         # Process the latitude and longitude as needed
         # For example, you can store them in the database, use them in your application, etc.
 
-        return redirect('http://www.idlube.com')
+        return redirect('https://www.idlube.com')
     else:
-        return redirect('http://www.idlube.com')
+        return redirect('https://www.idlube.com')
 
 def detail(request, equipment_id):
     # get equipment by id

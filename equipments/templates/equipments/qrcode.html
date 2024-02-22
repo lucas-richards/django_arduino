@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Go to ID Website</title>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <button 
+            id="idWebsiteButton"
+            style="
+                margin: 150px;
+                font-size: 84px; 
+                padding: 10px 20px; 
+                cursor: pointer;
+                background-color: rgb(93, 147, 249);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                "
+            onclick="getLocation()">
+            ID Website
+        </button>
+        <div id="spinner" style="display: none; margin-left: 20px;">
+            <!-- Add your spinner HTML or use a library like Font Awesome or Spin.js -->
+            Loading...
+        </div>
+    </div>
+    
+    
+
+<script>
+function getLocation() {
+    document.getElementById('idWebsiteButton').style.display = 'none'; // Disable the button to prevent multiple clicks
+    document.getElementById('spinner').style.display = 'block';
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(sendLocationAndRedirect, handleLocationError);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function sendLocationAndRedirect(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    // Send the location to the Django server using a POST request
+    fetch('/get_client_location/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken')  // Include CSRF token if you are using Django's CSRF protection
+        },
+        body: `latitude=${latitude}&longitude=${longitude}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // alert('Location sent successfully!');
+            // Redirect to www.idlube.com
+            
+        } else {
+            // alert('Failed to send location.');
+        }
+        window.location.href = 'http://www.idlube.com';
+    })
+    .catch(error => {
+        console.error('Error sending location:', error);
+    });
+}
+
+function handleLocationError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            alert("User denied the request for Geolocation.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable.");
+            break;
+        case error.TIMEOUT:
+            alert("The request to get user location timed out.");
+            break;
+        case error.UNKNOWN_ERROR:
+            alert("An unknown error occurred.");
+            break;
+    }
+}
+
+// Helper function to get CSRF token from cookies
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+</script>
+
+</body>
+</html>

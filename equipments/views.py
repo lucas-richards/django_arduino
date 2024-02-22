@@ -69,6 +69,7 @@ def qrcode_id(request):
     #     data = json.loads(url.read().decode())
     #     data['qrcode'] = 'id'
     #     print(data)
+    return render(request, 'equipments/qrcode.html')
     try:
         # Send a request to the ipinfo.io API to get information about the client's IP address
         response = requests.get('https://ipinfo.io')
@@ -114,18 +115,28 @@ def get_client_location(request):
 
         print('Latitude:', latitude)
         print('Longitude:', longitude)
-        Location.objects.create(
-            qrcode='id',
-            latitude=latitude,
-            longitude=longitude,
-        )
+        try:
+            Location.objects.create(
+                qrcode='id',
+                latitude=latitude,
+                longitude=longitude,
+                IPv4='70.187.153.162',
+                city='',
+                state='',
+                country_name='',
+                postal='',
+                
+
+            )
+        except Exception as e:
+            print(f"Error: {e}")
 
         # Process the latitude and longitude as needed
         # For example, you can store them in the database, use them in your application, etc.
 
-        return JsonResponse({'status': 'success'})
+        return redirect('http://www.idlube.com')
     else:
-        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+        return redirect('http://www.idlube.com')
 
 def detail(request, equipment_id):
     # get equipment by id

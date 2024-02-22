@@ -85,6 +85,26 @@ def qrcode_detail(request):
         'locations': locations
     })
 
+@csrf_exempt
+def get_client_location(request):
+    if request.method == 'POST':
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
+
+        print('Latitude:', latitude)
+        print('Longitude:', longitude)
+        Location.objects.create(
+            qrcode='id',
+            latitude=latitude,
+            longitude=longitude,
+        )
+
+        # Process the latitude and longitude as needed
+        # For example, you can store them in the database, use them in your application, etc.
+
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 def detail(request, equipment_id):
     # get equipment by id

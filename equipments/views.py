@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.shortcuts import redirect
 import urllib.request
 import json
+import requests
 
 
  
@@ -64,11 +65,31 @@ def data(request):
         return JsonResponse({'data': '', 'message': str(e)} )
 
 def qrcode_id(request):
-    with urllib.request.urlopen("https://geolocation-db.com/json") as url:
-        data = json.loads(url.read().decode())
-        data['qrcode'] = 'id'
-        print(data)
-    Location(**data).save()
+    # with urllib.request.urlopen("https://geolocation-db.com/json") as url:
+    #     data = json.loads(url.read().decode())
+    #     data['qrcode'] = 'id'
+    #     print(data)
+    try:
+        # Send a request to the ipinfo.io API to get information about the client's IP address
+        response = requests.get('https://ipinfo.io')
+        # Parse the JSON response
+        data2 = response.json()
+        # Extract relevant information (e.g., city, region, country)
+        print('new data',data2)
+
+    except Exception as e:
+        print(f"Error: {e}")
+    # Location(**data).save()
+    Location.objects.create(
+        qrcode='id2',
+        city=data2['city'],
+        state=data2['region'],
+        country_name=data2['country'],
+        postal=data2['postal'],
+        IPv4 = data2['ip'],
+        latitude=data2['loc'].split(',')[0],
+        longitude=data2['loc'].split(',')[1],
+    )
     return redirect('http://www.idlube.com')
 
 def qrcode_tag(request):
